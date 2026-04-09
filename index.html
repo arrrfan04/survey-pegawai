@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Pemilihan Pegawai</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+ </head>
+ <body class="h-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 m-0 p-0">
+  <div id="homeView" class="h-full w-full flex flex-col overflow-auto bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 relative">
+   <button id="adminLoginBtn" class="absolute top-4 left-4 z-50 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white/80 hover:text-white px-4 py-2 rounded-lg border border-white/20 transition text-sm flex items-center gap-2">
+     <span>🔑</span> Admin Login
+   </button>
+   <div class="p-4 sm:p-6 space-y-6 animate-slide-in flex-1 flex flex-col justify-center items-center">
+    <div class="bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-3xl p-8 sm:p-12 text-center max-w-2xl">
+     <h1 id="homeTitle" class="text-4xl sm:text-5xl font-bold mb-2 drop-shadow-lg">Portal Pemilihan Pegawai Terbaik &amp; Indisipliner</h1>
+     <p id="companyNameHome" class="text-white/90 text-lg sm:text-xl drop-shadow-lg mb-2">LAPAS PEREMPUAN KELAS III TERNATE</p>
+     <p id="homeSubtitle" class="text-white/75 text-sm sm:text-base drop-shadow-lg">Periode: <span id="homeSurveyPeriod">Triwulan I 2026</span></p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full max-w-7xl px-2 flex-1 overflow-hidden">
+     <div class="bg-white/95 backdrop-blur rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+      <div class="bg-gradient-to-r from-amber-400 to-yellow-500 p-4 sm:p-5 text-white sticky top-0 z-10">
+       <p class="text-xs sm:text-sm font-semibold opacity-90">🏆 PEMENANG</p>
+       <h2 class="text-lg sm:text-2xl font-bold mt-1">Pegawai Terbaik</h2>
+      </div>
+      <div id="publishedBestEmployee" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4">
+       <p class="text-gray-500 text-center py-8">Memuat hasil...</p>
+      </div>
+     </div>
+     <div class="bg-white/95 backdrop-blur rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+      <div class="bg-gradient-to-r from-red-500 to-pink-600 p-4 sm:p-5 text-white sticky top-0 z-10">
+       <p class="text-xs sm:text-sm font-semibold opacity-90">⚠️ PERHATIAN</p>
+       <h2 class="text-lg sm:text-2xl font-bold mt-1">Pegawai Indisipliner</h2>
+      </div>
+      <div id="publishedUndisciplined" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4">
+       <p class="text-gray-500 text-center py-8">Memuat hasil...</p>
+      </div>
+     </div>
+    </div>
+    <div class="flex flex-col sm:flex-row gap-4 w-full max-w-2xl px-2 mt-6">
+     <button id="voteAgainBtn" class="flex-1 bg-white text-blue-600 font-bold py-4 rounded-xl transition hover:bg-blue-50 shadow-lg text-lg transform hover:scale-105">Mulai Voting 🗳️</button>
+    </div>
+   </div>
+  </div>
+  <script src="app.js"></script>
+ </body>
+</html>

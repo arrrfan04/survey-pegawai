@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Pemilihan Pegawai</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+ </head>
+ <body class="h-full bg-white m-0 p-0">
+  <div id="adminView" class="h-full w-full flex flex-col overflow-auto bg-white">
+   <div class="p-4 sm:p-6 space-y-6">
+    <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-2xl p-6 sm:p-8 animate-slide-in">
+     <div class="flex items-center justify-between">
+      <div>
+       <h1 class="text-2xl sm:text-3xl font-bold">Dashboard Admin</h1>
+       <p id="adminSurveyPeriod" class="text-purple-100">Survey Triwulan I 2026</p>
+      </div><button id="logoutAdminBtn" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-semibold transition">Keluar</button>
+     </div>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+     <div class="bg-white rounded-xl shadow p-6 border-l-4 border-blue-500">
+      <p class="text-gray-600 text-sm font-semibold">Total Pemilih</p>
+      <p id="totalVoters" class="text-3xl font-bold text-blue-600 mt-2">0</p>
+     </div>
+     <div class="bg-white rounded-xl shadow p-6 border-l-4 border-indigo-500">
+      <p class="text-gray-600 text-sm font-semibold">Total Suara Masuk</p>
+      <p id="totalVotes" class="text-3xl font-bold text-indigo-600 mt-2">0</p>
+     </div>
+     <div class="bg-white rounded-xl shadow p-6 border-l-4 border-green-500">
+      <p class="text-gray-600 text-sm font-semibold">Status Publikasi</p>
+      <p id="publicationStatus" class="text-lg font-bold text-green-600 mt-2">Draft</p>
+     </div>
+    </div>
+    <div class="overflow-x-auto pb-2 -mx-4 sm:mx-0 px-4 sm:px-0">
+     <div class="flex gap-1.5 sm:gap-2 min-w-min">
+      <button id="adminTabResults" class="admin-tab px-2.5 sm:px-4 py-2 text-xs sm:text-sm bg-blue-600 text-white font-semibold rounded-lg transition whitespace-nowrap flex-shrink-0">📊 Hasil</button> <button id="adminTabHistory" class="admin-tab px-2.5 sm:px-4 py-2 text-xs sm:text-sm bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition whitespace-nowrap flex-shrink-0">📜 Riwayat</button> <button id="adminTabPublish" class="admin-tab px-2.5 sm:px-4 py-2 text-xs sm:text-sm bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition whitespace-nowrap flex-shrink-0">📢 Publikasi</button> <button id="adminTabSelectEmployee" class="admin-tab px-2.5 sm:px-4 py-2 text-xs sm:text-sm bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition whitespace-nowrap flex-shrink-0">🎯 Peserta</button> <button id="adminTabReasons" class="admin-tab px-2.5 sm:px-4 py-2 text-xs sm:text-sm bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition whitespace-nowrap flex-shrink-0">⚙️ Alasan</button> <button id="adminTabUsers" class="admin-tab px-2.5 sm:px-4 py-2 text-xs sm:text-sm bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition whitespace-nowrap flex-shrink-0">👥 User</button> <button id="adminTabPhoto" class="admin-tab px-2.5 sm:px-4 py-2 text-xs sm:text-sm bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition whitespace-nowrap flex-shrink-0">📸 Foto</button> <button id="adminTabSurvey" class="admin-tab px-2.5 sm:px-4 py-2 text-xs sm:text-sm bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition whitespace-nowrap flex-shrink-0">🔄 Survey</button>
+     </div>
+    </div><!-- Tab: Hasil Voting -->
+    <div id="adminResultsTab" class="space-y-6">
+     <div class="bg-white rounded-xl shadow p-3 sm:p-6">
+      <h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-4">📋 Semua Data Voting</h2>
+      <div class="overflow-x-auto -mx-3 sm:mx-0">
+       <table class="w-full text-xs sm:text-sm">
+        <thead>
+         <tr class="border-b-2 border-gray-300">
+          <th class="text-left py-2 px-2 sm:px-3 font-semibold text-gray-700">Pemilih</th>
+          <th class="text-left py-2 px-2 sm:px-3 font-semibold text-gray-700">Pegawai</th>
+          <th class="text-left py-2 px-2 sm:px-3 font-semibold text-gray-700">Kategori</th>
+          <th class="text-left py-2 px-2 sm:px-3 font-semibold text-gray-700">Alasan</th>
+          <th class="text-left py-2 px-2 sm:px-3 font-semibold text-gray-700">Waktu</th>
+         </tr>
+        </thead>
+        <tbody id="votingDetailsTable">
+         <tr>
+          <td colspan="5" class="text-center py-8 text-gray-500">Memuat data voting...</td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+    </div><!-- Other tabs will be managed by JS -->
+    <div id="adminHistoryTab" class="hidden"></div>
+    <div id="adminPublishTab" class="hidden">
+     <div class="bg-white rounded-xl shadow p-6">
+       <h2 class="text-xl font-bold text-gray-800 mb-4">📢 Publikasi Hasil</h2><button id="publishBtn" class="w-full bg-green-500 text-white py-3 rounded-lg">📤 Publikasikan Hasil</button>
+       <div id="publicationArchive" class="mt-8 space-y-6"></div>
+     </div>
+    </div>
+    <div id="adminSelectEmployeeTab" class="hidden space-y-6">
+     <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-xl font-bold mb-6">🎯 Pilih Peserta Nominasi</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+       <div>
+        <h3 class="font-bold mb-2">🏆 Terbaik</h3><select id="bestEmployeeSelect" class="w-full p-2 border rounded mb-2"></select><button id="addBestEmployeeBtn" onclick="addEmployeeToCategory('terbaik')" class="w-full bg-green-500 text-white p-2 rounded">Tambah</button>
+        <div id="bestEmployeesList" class="mt-4"></div>
+       </div>
+       <div>
+        <h3 class="font-bold mb-2">⚠️ Indisipliner</h3><select id="undisciplinedEmployeeSelect" class="w-full p-2 border rounded mb-2"></select><button id="addUndisciplinedEmployeeBtn" onclick="addEmployeeToCategory('indisipliner')" class="w-full bg-red-500 text-white p-2 rounded">Tambah</button>
+        <div id="undisciplinedEmployeesList" class="mt-4"></div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div id="adminReasonsTab" class="hidden">
+     <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-xl font-bold mb-6">⚙️ Kelola Alasan</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+       <div>
+        <h3 class="font-bold mb-2">🏆 Terbaik</h3>
+        <div id="reasonsListBest"></div><input type="text" id="newReasonBest" placeholder="Alasan baru" class="w-full p-2 border rounded mt-2"><button id="addReasonBestBtn" onclick="addReason('terbaik')" class="w-full bg-blue-600 text-white p-2 rounded mt-2">Tambah</button>
+       </div>
+       <div>
+        <h3 class="font-bold mb-2">⚠️ Indisipliner</h3>
+        <div id="reasonsListUndisciplined"></div><input type="text" id="newReasonUndisciplined" placeholder="Alasan baru" class="w-full p-2 border rounded mt-2"><button id="addReasonUndisciplinedBtn" onclick="addReason('indisipliner')" class="w-full bg-blue-600 text-white p-2 rounded mt-2">Tambah</button>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div id="adminUsersTab" class="hidden">
+     <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-xl font-bold mb-6">👥 Kelola User</h2>
+      <div class="space-y-4 mb-8">
+       <input type="text" id="newUserName" placeholder="Nama" class="w-full p-2 border rounded"> <input type="text" id="newUserUsername" placeholder="Username" class="w-full p-2 border rounded"> <input type="text" id="newUserPassword" placeholder="Password" class="w-full p-2 border rounded"><button id="addNewUserBtn" onclick="addNewUser()" class="w-full bg-blue-600 text-white p-2 rounded">Tambah User</button>
+      </div>
+      <table class="w-full">
+       <tbody id="usersTableBody"></tbody>
+      </table>
+     </div>
+    </div>
+    <div id="adminPhotoTab" class="hidden"></div>
+    <div id="adminSurveyTab" class="hidden">
+     <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-xl font-bold mb-4">🔄 Survey Baru</h2><select id="surveyTriwulan" class="w-full p-2 border rounded mb-2"> <option value="I">I</option> <option value="II">II</option> <option value="III">III</option> <option value="IV">IV</option> </select><select id="surveyTahun" class="w-full p-2 border rounded mb-2"></select><button id="confirmNewSurveyBtn" class="w-full bg-red-600 text-white p-3 rounded">Buat Survey Baru</button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <input type="file" id="employeePhotoInput" accept="image/*" class="hidden">
+  <script src="app.js"></script>
+ </body>
+</html>

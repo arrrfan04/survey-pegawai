@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voting - Pemilihan Pegawai</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+ </head>
+ <body class="h-full m-0 p-0">
+  <div id="votingView" class="h-full w-full flex flex-col">
+   <div class="sticky top-0 z-50 bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg">
+    <div class="px-3 sm:px-6 py-3 sm:py-5">
+     <div class="flex items-start justify-between gap-2 mb-3">
+      <div class="flex-1 min-w-0">
+       <h1 id="votingTitle" class="text-lg sm:text-3xl font-bold leading-tight">Pilih Pegawai Terbaik</h1>
+       <p id="votingSurveyPeriod" class="text-blue-100 text-xs sm:text-sm mt-0.5">Survey Triwulan I 2026</p>
+      </div><button id="logoutVotingBtn" class="bg-white/20 hover:bg-white/30 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap flex-shrink-0">Keluar</button>
+     </div>
+     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
+      <p class="text-blue-100 text-xs sm:text-sm">Sudah voting: <span id="votedCount" class="font-bold text-sm sm:text-lg">0</span> / 2</p>
+      <div id="categoryToggle" class="grid grid-cols-2 gap-1.5 sm:gap-2">
+       <button class="category-btn bg-white/40 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-semibold transition" data-category="terbaik">🏆 Terbaik</button> <button class="category-btn bg-white/20 hover:bg-white/30 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-semibold transition" data-category="indisipliner">⚠️ Indisipliner</button>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="flex-1 overflow-auto p-4 sm:p-6">
+    <div id="employeesGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-6"></div>
+    <div id="noEmployeesMsg" class="hidden text-center py-12">
+     <p class="text-gray-500 text-lg">Memuat data pegawai...</p>
+    </div>
+   </div><!-- Confirmation Modal -->
+   <div id="confirmationModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-slide-in">
+    <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 space-y-4 modal-content">
+     <h2 class="text-xl font-bold text-gray-800">Konfirmasi Voting</h2>
+     <div class="bg-blue-50 rounded-lg p-4 space-y-2">
+      <p class="text-sm text-gray-600">Anda akan voting untuk:</p>
+      <p id="confirmEmpName" class="text-lg font-bold text-gray-800">-</p>
+      <p class="text-sm text-gray-600">Kategori:</p>
+      <p id="confirmCategory" class="text-lg font-bold text-blue-600">-</p>
+     </div>
+     <p class="text-sm text-gray-600 text-center">Apakah Anda yakin ingin melanjutkan?</p>
+     <div class="flex gap-3 pt-4">
+      <button id="confirmCancel" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded-lg transition">Batal</button> <button id="confirmContinue" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition">Lanjut</button>
+     </div>
+    </div>
+   </div><!-- Reason Modal -->
+   <div id="reasonModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-slide-in">
+    <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 space-y-4 max-h-full overflow-y-auto modal-content">
+     <h2 class="text-xl font-bold text-gray-800">Alasan Voting</h2>
+     <div class="bg-blue-50 rounded-lg p-4">
+      <p id="reasonEmpName" class="font-bold text-gray-800">-</p>
+      <p id="reasonCategory" class="text-sm text-gray-600 mt-1">-</p>
+     </div>
+     <div class="space-y-2">
+      <label for="reasonSelect" class="block text-sm font-semibold text-gray-700">Pilih alasan voting:</label> <select id="reasonSelect" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 transition"> <option value="">-- Pilih alasan --</option> </select>
+     </div>
+     <div class="flex gap-3 pt-4">
+      <button id="reasonCancel" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded-lg transition">Kembali</button> <button id="reasonSubmit" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2 rounded-lg transition">Submit</button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script src="app.js"></script>
+ </body>
+</html>
