@@ -500,34 +500,35 @@ function updatePublishDisplay() {
       const isPhoto = emp ? emp.isPhotoUrl : false;
       
       const card = document.createElement('div');
-      card.className = `bg-white rounded-3xl overflow-hidden mb-8 shadow-xl border border-gray-100 transition-all hover:scale-[1.02] transform animate-scale-in`;
+      card.className = `bg-white rounded-2xl overflow-hidden mb-4 sm:mb-8 shadow-lg border border-gray-100 transition-all hover:scale-[1.01] transform animate-scale-in`;
       card.innerHTML = `
         <div class="aspect-square w-full bg-gray-100 relative group">
           ${isPhoto ? `
             <img src="${displayPhoto}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-full w-full bg-gray-50\'><span class=\'text-6xl\'>👤</span></div>';">
           ` : `<div class="flex items-center justify-center h-full w-full bg-gray-50"><span class="text-6xl">${displayPhoto}</span></div>`}
           <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-          <div class="absolute bottom-4 left-4 right-4 text-white">
-             <div class="flex items-center gap-2 mb-1">
-               <span class="bg-${color}-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter shadow-lg">Ranking ${item[0] == sorted[0][0] ? '1' : sorted.indexOf(item) + 1}</span>
+          <div class="absolute bottom-2 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 text-white">
+             <div class="flex items-center gap-1 sm:gap-2 mb-0.5 sm:mb-1">
+               <span class="bg-${color}-500 text-white text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full uppercase tracking-tighter shadow-lg">Ranking ${item[0] == sorted[0][0] ? '1' : sorted.indexOf(item) + 1}</span>
              </div>
-             <h3 class="text-xl font-bold truncate">${displayName}</h3>
+             <h3 class="text-base sm:text-xl font-bold truncate">${displayName}</h3>
           </div>
         </div>
-        <div class="p-6 space-y-4">
-          <div class="grid grid-cols-2 gap-4">
-            <div class="space-y-1">
-              <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">ID / NIP</p>
+        <div class="p-3 sm:p-6 space-y-2 sm:space-y-4">
+          <div class="grid grid-cols-2 gap-2 sm:gap-4">
+            <div class="space-y-0.5 sm:space-y-1">
+              <p class="text-[8px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest">ID / NIP</p>
               <p class="text-sm font-semibold text-gray-700 truncate">${id}</p>
             </div>
-            <div class="space-y-1">
-              <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Jabatan</p>
-              <p class="text-sm font-semibold text-gray-700 truncate">${displayPos}</p>
+            <div class="space-y-0.5 sm:space-y-1 text-right">
+              <p class="text-[8px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest text-right">Total Suara</p>
+              <div class="flex items-center justify-end gap-1 sm:gap-2">
+                <span class="text-xs sm:text-lg font-black text-gray-900">${score}</span>
+              </div>
             </div>
           </div>
           
           <div class="pt-4 border-t border-gray-50 flex items-center justify-between">
-            <span class="text-sm font-medium text-gray-400">Total Suara</span>
             <div class="flex items-center gap-2">
               <span class="text-2xl font-black text-${color == 'amber' ? 'yellow' : 'red'}-600">${score}</span>
               <span class="text-xs font-bold text-gray-400 uppercase">Suara</span>
