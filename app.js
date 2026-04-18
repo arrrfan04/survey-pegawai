@@ -500,7 +500,7 @@ function updatePublishDisplay() {
       const isPhoto = emp ? emp.isPhotoUrl : false;
       
       const card = document.createElement('div');
-      card.className = `bg-white rounded-2xl overflow-hidden mb-4 sm:mb-8 shadow-lg border border-gray-100 transition-all hover:scale-[1.01] transform animate-scale-in`;
+      card.className = `bg-white rounded-xl overflow-hidden mb-2 sm:mb-4 shadow-md border border-gray-100 transition-all hover:scale-[1.01] transform animate-scale-in`;
       card.innerHTML = `
         <div class="aspect-square w-full bg-gray-100 relative group">
           ${isPhoto ? `
