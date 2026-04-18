@@ -71,31 +71,39 @@
     <div id="adminSelectEmployeeTab" class="hidden space-y-6">
      <div class="bg-white rounded-xl shadow p-6">
       <h2 class="text-xl font-bold mb-6">🎯 Pilih Peserta Nominasi</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-       <div>
-        <h3 class="font-bold mb-2">🏆 Terbaik</h3><select id="bestEmployeeSelect" class="w-full p-2 border rounded mb-2"></select><button id="addBestEmployeeBtn" onclick="addEmployeeToCategory('terbaik')" class="w-full bg-green-500 text-white p-2 rounded">Tambah</button>
-        <div id="bestEmployeesList" class="mt-4"></div>
+       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+         <h3 class="font-bold mb-2">🏆 Terbaik</h3><select id="bestEmployeeSelect" class="w-full p-2 border rounded mb-2"></select><button id="addBestEmployeeBtn" onclick="addEmployeeToCategory('terbaik')" class="w-full bg-green-500 text-white p-2 rounded">Tambah</button>
+         <div id="bestEmployeesList" class="mt-4"></div>
+        </div>
+        <div>
+         <h3 class="font-bold mb-2">🌟 Teladan</h3><select id="exemplaryEmployeeSelect" class="w-full p-2 border rounded mb-2"></select><button id="addExemplaryEmployeeBtn" onclick="addEmployeeToCategory('teladan')" class="w-full bg-emerald-500 text-white p-2 rounded">Tambah</button>
+         <div id="exemplaryEmployeesList" class="mt-4"></div>
+        </div>
+        <div>
+         <h3 class="font-bold mb-2">⚠️ Indisipliner</h3><select id="undisciplinedEmployeeSelect" class="w-full p-2 border rounded mb-2"></select><button id="addUndisciplinedEmployeeBtn" onclick="addEmployeeToCategory('indisipliner')" class="w-full bg-red-500 text-white p-2 rounded">Tambah</button>
+         <div id="undisciplinedEmployeesList" class="mt-4"></div>
+        </div>
        </div>
-       <div>
-        <h3 class="font-bold mb-2">⚠️ Indisipliner</h3><select id="undisciplinedEmployeeSelect" class="w-full p-2 border rounded mb-2"></select><button id="addUndisciplinedEmployeeBtn" onclick="addEmployeeToCategory('indisipliner')" class="w-full bg-red-500 text-white p-2 rounded">Tambah</button>
-        <div id="undisciplinedEmployeesList" class="mt-4"></div>
-       </div>
-      </div>
      </div>
     </div>
     <div id="adminReasonsTab" class="hidden">
      <div class="bg-white rounded-xl shadow p-6">
       <h2 class="text-xl font-bold mb-6">⚙️ Kelola Alasan</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-       <div>
-        <h3 class="font-bold mb-2">🏆 Terbaik</h3>
-        <div id="reasonsListBest"></div><input type="text" id="newReasonBest" placeholder="Alasan baru" class="w-full p-2 border rounded mt-2"><button id="addReasonBestBtn" onclick="addReason('terbaik')" class="w-full bg-blue-600 text-white p-2 rounded mt-2">Tambah</button>
+       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+         <h3 class="font-bold mb-2">🏆 Terbaik</h3>
+         <div id="reasonsListBest"></div><input type="text" id="newReasonBest" placeholder="Alasan baru" class="w-full p-2 border rounded mt-2"><button id="addReasonBestBtn" onclick="addReason('terbaik')" class="w-full bg-blue-600 text-white p-2 rounded mt-2">Tambah</button>
+        </div>
+        <div>
+         <h3 class="font-bold mb-2">🌟 Teladan</h3>
+         <div id="reasonsListExemplary"></div><input type="text" id="newReasonExemplary" placeholder="Alasan baru" class="w-full p-2 border rounded mt-2"><button id="addReasonExemplaryBtn" onclick="addReason('teladan')" class="w-full bg-blue-600 text-white p-2 rounded mt-2">Tambah</button>
+        </div>
+        <div>
+         <h3 class="font-bold mb-2">⚠️ Indisipliner</h3>
+         <div id="reasonsListUndisciplined"></div><input type="text" id="newReasonUndisciplined" placeholder="Alasan baru" class="w-full p-2 border rounded mt-2"><button id="addReasonUndisciplinedBtn" onclick="addReason('indisipliner')" class="w-full bg-blue-600 text-white p-2 rounded mt-2">Tambah</button>
+        </div>
        </div>
-       <div>
-        <h3 class="font-bold mb-2">⚠️ Indisipliner</h3>
-        <div id="reasonsListUndisciplined"></div><input type="text" id="newReasonUndisciplined" placeholder="Alasan baru" class="w-full p-2 border rounded mt-2"><button id="addReasonUndisciplinedBtn" onclick="addReason('indisipliner')" class="w-full bg-blue-600 text-white p-2 rounded mt-2">Tambah</button>
-       </div>
-      </div>
      </div>
     </div>
     <div id="adminUsersTab" class="hidden">

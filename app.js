@@ -1,5 +1,5 @@
 const defaultConfig = {
-  app_title: 'Pemilihan Pegawai Terbaik & Indisipliner',
+  app_title: 'Pemilihan Pegawai Terbaik, Teladan & Indisipliner',
   company_name: 'LAPAS PEREMPUAN KELAS III TERNATE'
 };
 
@@ -15,7 +15,7 @@ let validUsers = [];
 let currentUploadTargetId = null;
 let activeAdminTab = 'results';
 
-const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYESgH8fhZbSWwCtvesJ6e61-HbLVux3_IqbXu-dkWDkE_naAxyHtUTqxLdAqMbL68/exec";
+const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzsX_Lnq4HjnFOydk3A9eH4I8-B6qwEkwjfGsl02iD9lXzxOTLB2-aIBybd1spfd83J/exec";
 
 // SDK implementation
 window.dataSdk = {
@@ -88,8 +88,9 @@ async function loadAppData() {
         if (mainCat) mainCat.split(',').forEach(c => cats.add(normalizeCategory(c)));
         
         // Check for separate columns
-        if (emp.terbaik || emp.Terbaik || emp.is_terbaik === true || String(emp.terbaik).toUpperCase() === 'YA') cats.add('terbaik');
-        if (emp.indisipliner || emp.Indisipliner || emp.is_indisipliner === true || String(emp.indisipliner).toUpperCase() === 'YA') cats.add('indisipliner');
+        if (String(emp.terbaik || emp.Terbaik || "").toUpperCase() === 'YA' || emp.is_terbaik === true) cats.add('terbaik');
+        if (String(emp.indisipliner || emp.Indisipliner || "").toUpperCase() === 'YA' || emp.is_indisipliner === true) cats.add('indisipliner');
+        if (String(emp.teladan || emp.Teladan || "").toUpperCase() === 'YA' || emp.is_teladan === true) cats.add('teladan');
         
         if (photoUrl) console.log(`[Photo Debug] ${name} (ID: ${emp.id || emp.ID}): ${photoUrl}`);
 
@@ -107,7 +108,7 @@ async function loadAppData() {
     }
     
     if (data.reasons) {
-      const newReasons = { terbaik: [], indisipliner: [] };
+      const newReasons = { terbaik: [], indisipliner: [], teladan: [] };
       data.reasons.forEach(r => {
         const cat = normalizeCategory(r.category || r.kategori);
         if (newReasons[cat]) newReasons[cat].push({ alasan: r.alasan });
@@ -193,7 +194,7 @@ function getEmojiForPosition(position) {
   return emojiMap[position] || emojiMap['default'];
 }
 
-let reasonsOptions = { terbaik: [], indisipliner: [] };
+let reasonsOptions = { terbaik: [], indisipliner: [], teladan: [] };
 const adminCredentials = { username: 'indra', password: 'abdrachman' };
 
 function initializeSurvey() {
@@ -329,7 +330,11 @@ if (document.getElementById('votingView')) {
       document.querySelectorAll('.category-btn').forEach(b => { b.classList.remove('bg-white/40'); b.classList.add('bg-white/20'); });
       this.classList.replace('bg-white/20', 'bg-white/40');
       currentCategory = this.dataset.category;
-      document.getElementById('votingTitle').textContent = `Pilih Pegawai ${currentCategory === 'terbaik' ? 'Terbaik' : 'Indisipliner'}`;
+      let title = "";
+      if (currentCategory === 'terbaik') title = "Pilih Pegawai Terbaik";
+      else if (currentCategory === 'teladan') title = "Pilih Pegawai Teladan";
+      else title = "Pilih Pegawai Indisipliner";
+      document.getElementById('votingTitle').textContent = title;
       renderEmployees();
     });
   });
@@ -346,7 +351,11 @@ if (document.getElementById('votingView')) {
   window.showConfirmation = (empId, empName) => {
     pendingVote = { empId, empName };
     document.getElementById('confirmEmpName').textContent = empName;
-    document.getElementById('confirmCategory').textContent = currentCategory === 'terbaik' ? 'Pegawai Terbaik' : 'Pegawai Indisipliner';
+    let modalCat = "";
+    if (currentCategory === 'terbaik') modalCat = "Pegawai Terbaik";
+    else if (currentCategory === 'teladan') modalCat = "Pegawai Teladan";
+    else modalCat = "Pegawai Indisipliner";
+    document.getElementById('confirmCategory').textContent = modalCat;
     document.getElementById('confirmationModal').classList.remove('hidden');
   };
 
@@ -360,7 +369,11 @@ if (document.getElementById('votingView')) {
       sel.innerHTML = '<option value="">-- Pilih alasan --</option>';
       (reasonsOptions[currentCategory] || []).forEach(r => { const opt = document.createElement('option'); opt.value = r.alasan; opt.textContent = r.alasan; sel.appendChild(opt); });
       document.getElementById('reasonEmpName').textContent = pendingVote.empName;
-      document.getElementById('reasonCategory').textContent = `Kategori: ${currentCategory === 'terbaik' ? 'Pegawai Terbaik' : 'Pegawai Indisipliner'}`;
+      let reasonCatText = "";
+      if (currentCategory === 'terbaik') reasonCatText = "Kategori: Pegawai Terbaik";
+      else if (currentCategory === 'teladan') reasonCatText = "Kategori: Pegawai Teladan";
+      else reasonCatText = "Kategori: Pegawai Indisipliner";
+      document.getElementById('reasonCategory').textContent = reasonCatText;
       document.getElementById('reasonModal').classList.remove('hidden');
       document.getElementById('confirmationModal').classList.add('hidden');
     });
@@ -392,7 +405,11 @@ function renderEmployees() {
   const filtered = mockEmployees.filter(e => e.categories && e.categories.includes(targetCat));
   grid.innerHTML = '';
   if (filtered.length === 0) {
-    document.getElementById('noEmployeesMsg').innerHTML = `<div class="text-center py-12 space-y-4"><div class="text-6xl">📋</div><p class="text-gray-700 text-lg font-semibold">Admin belum menambahkan peserta nominasi</p><p class="text-gray-500 text-sm">Kategori: <strong>${currentCategory === 'terbaik' ? 'Pegawai Terbaik' : 'Pegawai Indisipliner'}</strong></p></div>`;
+    let noEmpCat = "";
+    if (currentCategory === 'terbaik') noEmpCat = "Pegawai Terbaik";
+    else if (currentCategory === 'teladan') noEmpCat = "Pegawai Teladan";
+    else noEmpCat = "Pegawai Indisipliner";
+    document.getElementById('noEmployeesMsg').innerHTML = `<div class="text-center py-12 space-y-4"><div class="text-6xl">📋</div><p class="text-gray-700 text-lg font-semibold">Admin belum menambahkan peserta nominasi</p><p class="text-gray-500 text-sm">Kategori: <strong>${noEmpCat}</strong></p></div>`;
     document.getElementById('noEmployeesMsg').classList.remove('hidden');
     return;
   }
@@ -409,7 +426,7 @@ function renderEmployees() {
           <img src="${emp.photo}" class="w-full h-full object-cover" onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');">
           <div class="hidden flex items-center justify-center w-full h-full bg-gray-100"><span class="text-6xl">${getEmojiForPosition(emp.position)}</span></div>
         ` : `<span class="text-6xl">${emp.photo}</span>`}
-        ${voted ? `<div class="absolute inset-0 flex items-center justify-center bg-${currentCategory === 'indisipliner' ? 'red' : 'green'}-500/20"><span class="text-5xl text-${currentCategory === 'indisipliner' ? 'red' : 'green'}-600 font-bold">✓</span></div>` : ''}
+        ${voted ? `<div class="absolute inset-0 flex items-center justify-center bg-${currentCategory === 'indisipliner' ? 'red' : currentCategory === 'teladan' ? 'emerald' : 'green'}-500/20"><span class="text-5xl text-${currentCategory === 'indisipliner' ? 'red' : currentCategory === 'teladan' ? 'emerald' : 'green'}-600 font-bold">✓</span></div>` : ''}
       </div>
       <div class="p-4">
         <h3 class="font-bold text-gray-800 truncate">${emp.name}</h3>
@@ -455,6 +472,7 @@ function updatePublishDisplay() {
   };
 
   const bestData = tally(currentVotes, 'terbaik');
+  const teladanData = tally(currentVotes, 'teladan');
   const undData = tally(currentVotes, 'indisipliner');
   
   const render = (container, data, color) => {
@@ -522,6 +540,7 @@ function updatePublishDisplay() {
   };
   
   render(bestContainer, bestData, 'amber');
+  render(document.getElementById('publishedExemplary'), teladanData, 'emerald');
   render(undContainer, undData, 'red');
 }
 
@@ -637,7 +656,7 @@ function renderVotingDetailsTable() {
       r.innerHTML = `
         <td class="p-3 font-bold">${data.name}</td>
         <td class="p-3 text-xs text-gray-400">ID: ${id}</td>
-        <td class="p-3"><span class="px-2 py-1 rounded text-xs font-bold ${cat === 'terbaik' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${cat.toUpperCase()}</span></td>
+        <td class="p-3"><span class="px-2 py-1 rounded text-xs font-bold ${cat === 'terbaik' ? 'bg-green-100 text-green-800' : cat === 'teladan' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">${cat.toUpperCase()}</span></td>
         <td class="p-3 font-bold text-blue-600 text-lg">${data.count} Suara</td>
         <td class="p-3">
           <div class="w-full bg-gray-200 rounded-full h-2 max-w-[100px]">
@@ -777,9 +796,9 @@ function renderArchive() {
     card.className = 'bg-white rounded-xl p-5 border shadow-sm hover:shadow-md transition card-animate mb-4';
     let html = `<div class="flex justify-between items-center mb-4"><h4 class="font-bold text-purple-700 underline text-lg">${period}</h4> <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-bold">${periodVotes.length} Total Suara</span></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-6">`;
     
-    ['terbaik', 'indisipliner'].forEach(cat => {
+    ['terbaik', 'teladan', 'indisipliner'].forEach(cat => {
       const winners = Object.entries(summary[cat] || {}).sort((a,b) => b[1].count - a[1].count).slice(0, 1);
-      html += `<div class="p-3 bg-gray-50 rounded-lg border-l-4 ${cat === 'terbaik' ? 'border-green-500' : 'border-red-500'}">
+      html += `<div class="p-3 bg-gray-50 rounded-lg border-l-4 ${cat === 'terbaik' ? 'border-green-500' : cat === 'teladan' ? 'border-emerald-500' : 'border-red-500'}">
         <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">${cat}</p>`;
       if (winners.length) {
         html += `<p class="font-bold text-gray-800">${winners[0][1].name}</p>
@@ -812,6 +831,7 @@ function renderHistoryTab() {
               <th class="text-left py-2 px-3 font-semibold text-gray-700">Pegawai</th>
               <th class="text-left py-2 px-3 font-semibold text-gray-700">Kategori</th>
               <th class="text-left py-2 px-3 font-semibold text-gray-700">Waktu</th>
+              <th class="text-center py-2 px-3 font-semibold text-gray-700">Aksi</th>
             </tr>
           </thead>
           <tbody id="historyTableBody"></tbody>
@@ -835,8 +855,11 @@ function renderHistoryTab() {
       <td class="p-3 text-xs font-semibold text-purple-600">${v.survey_period || '-'}</td>
       <td class="p-3">${voterName}</td>
       <td class="p-3">${empName}</td>
-      <td class="p-3"><span class="px-2 py-1 rounded text-xs font-bold ${v.category === 'terbaik' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${v.category}</span></td>
-      <td class="p-3 text-xs text-gray-500">${new Date(v.timestamp).toLocaleString('id-ID')}</td>`;
+      <td class="p-3"><span class="px-2 py-1 rounded text-xs font-bold ${v.category === 'terbaik' ? 'bg-green-100 text-green-800' : v.category === 'teladan' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">${v.category}</span></td>
+      <td class="p-3 text-xs text-gray-500">${new Date(v.timestamp).toLocaleString('id-ID')}</td>
+      <td class="p-3 text-center">
+        <button class="text-red-600 hover:text-red-900 font-bold" onclick="deleteVoteHistory('${v.voter_id}', '${v.timestamp}')">Hapus</button>
+      </td>`;
     tb.appendChild(r);
   });
 }
@@ -844,6 +867,7 @@ function renderHistoryTab() {
 function showVotingWarning(voted) {
   const missing = [];
   if (!voted.has('terbaik')) missing.push({ name: 'Pegawai Terbaik', emoji: '🏆', color: 'yellow' });
+  if (!voted.has('teladan')) missing.push({ name: 'Pegawai Teladan', emoji: '🌟', color: 'emerald' });
   if (!voted.has('indisipliner')) missing.push({ name: 'Pegawai Indisipliner', emoji: '⚠️', color: 'red' });
   const modal = document.createElement('div');
   modal.className = 'fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4';
@@ -854,10 +878,12 @@ function showVotingWarning(voted) {
 
 async function renderSelectEmployeeTab() {
   const bSel = document.getElementById('bestEmployeeSelect');
+  const tSel = document.getElementById('exemplaryEmployeeSelect');
   const uSel = document.getElementById('undisciplinedEmployeeSelect');
   if (!bSel) return;
   
   const opt = (s) => {
+    if (!s) return;
     s.innerHTML = '<option value="">-- Pilih Pegawai --</option>';
     mockEmployees.forEach(e => {
       const o = document.createElement('option');
@@ -898,16 +924,32 @@ async function renderSelectEmployeeTab() {
     });
   };
   renderList('terbaik', 'bestEmployeesList');
+  renderList('teladan', 'exemplaryEmployeesList');
   renderList('indisipliner', 'undisciplinedEmployeesList');
 }
 
 window.addEmployeeToCategory = async (cat) => {
-  const selectId = cat === 'terbaik' ? 'bestEmployeeSelect' : 'undisciplinedEmployeeSelect';
-  const btnId = cat === 'terbaik' ? 'addBestEmployeeBtn' : 'addUndisciplinedEmployeeBtn';
+  const selectId = cat === 'terbaik' ? 'bestEmployeeSelect' : cat === 'teladan' ? 'exemplaryEmployeeSelect' : 'undisciplinedEmployeeSelect';
+  const btnId = cat === 'terbaik' ? 'addBestEmployeeBtn' : cat === 'teladan' ? 'addExemplaryEmployeeBtn' : 'addUndisciplinedEmployeeBtn';
   const select = document.getElementById(selectId);
   const btn = document.getElementById(btnId);
   const id = select.value;
   if (!id) return;
+
+  const emp = mockEmployees.find(e => e.id === id);
+  if (emp) {
+    const cats = ['terbaik', 'teladan', 'indisipliner'];
+    const otherCats = cats.filter(c => c !== cat);
+    for (const oc of otherCats) {
+      if (emp.categories.includes(oc)) {
+        const labels = { terbaik: 'Terbaik', teladan: 'Teladan', indisipliner: 'Indisipliner' };
+        return showNotification(`Pegawai ini sudah masuk kategori ${labels[oc]}. Hapus dari kategori tersebut jika ingin memindahkannya.`, 'error');
+      }
+    }
+    if (emp.categories.includes(cat)) {
+      return showNotification('Pegawai ini sudah ada di kategori ini', 'error');
+    }
+  }
   
   const originalText = btn.textContent;
   btn.disabled = true;
@@ -957,12 +999,13 @@ function renderReasonsList() {
     r.forEach((item, i) => { const d = document.createElement('div'); d.className = 'flex justify-between p-3 bg-gray-50 border rounded-lg mb-2'; d.innerHTML = `<span>${item.alasan}</span><button class="text-red-500" onclick="deleteReason('${cat}', ${i})">Hapus</button>`; c.appendChild(d); });
   };
   render('terbaik', 'reasonsListBest');
+  render('teladan', 'reasonsListExemplary');
   render('indisipliner', 'reasonsListUndisciplined');
 }
 
 window.addReason = async (cat) => {
-  const inputId = cat === 'terbaik' ? 'newReasonBest' : 'newReasonUndisciplined';
-  const btnId = cat === 'terbaik' ? 'addReasonBestBtn' : 'addReasonUndisciplinedBtn';
+  const inputId = cat === 'terbaik' ? 'newReasonBest' : cat === 'teladan' ? 'newReasonExemplary' : 'newReasonUndisciplined';
+  const btnId = cat === 'terbaik' ? 'addReasonBestBtn' : cat === 'teladan' ? 'addReasonExemplaryBtn' : 'addReasonUndisciplinedBtn';
   const el = document.getElementById(inputId);
   const btn = document.getElementById(btnId);
   const txt = el.value.trim();
@@ -1043,5 +1086,16 @@ window.deleteUser = async (id) => {
     showNotification('User berhasil dihapus', 'success');
   } else {
     showNotification('Gagal menghapus', 'error');
+  }
+};
+window.deleteVoteHistory = async (voterId, timestamp) => {
+  if (!confirm('Apakah Anda yakin ingin menghapus data voting ini secara permanen?')) return;
+  
+  const res = await dataSdk.update({ action: 'deleteVote', voter_id: voterId, timestamp: timestamp });
+  if (res.isOk) {
+    showNotification('Data riwayat berhasil dihapus', 'success');
+    await loadAppData();
+  } else {
+    showNotification('Gagal menghapus riwayat: ' + (res.error || ''), 'error');
   }
 };

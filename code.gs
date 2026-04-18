@@ -66,6 +66,8 @@ function doPost(e) {
         return addUser(data);
       case 'deleteUser':
         return deleteUser(data);
+      case 'deleteVote':
+        return deleteVote(data);
       case 'updateEmployeePhoto':
         return updateEmployeePhoto(data);
       case 'savePhoto':
@@ -235,6 +237,20 @@ function deleteUser(data) {
   return jsonResponse({ status: 'error', message: 'User not found' });
 }
 
+function deleteVote(data) {
+  const sheet = getOrCreateSheet(SHEETS.VOTES);
+  const values = sheet.getDataRange().getValues();
+  
+  for (let i = values.length - 1; i >= 1; i--) {
+    if (String(values[i][0]) === String(data.voter_id) && 
+        String(values[i][6]) === String(data.timestamp)) {
+      sheet.deleteRow(i + 1);
+      return jsonResponse({ status: 'success' });
+    }
+  }
+  return jsonResponse({ status: 'error', message: 'Vote record not found' });
+}
+
 /**
  * --- UTILITIES ---
  */
@@ -251,7 +267,7 @@ function getOrCreateSheet(name) {
     sheet = ss.insertSheet(name);
     // Add default headers
     const headers = {
-      [SHEETS.EMPLOYEES]: ['id', 'name', 'position', 'photo_url', 'terbaik', 'indisipliner'],
+      [SHEETS.EMPLOYEES]: ['id', 'name', 'position', 'photo_url', 'terbaik', 'indisipliner', 'teladan'],
       [SHEETS.REASONS]: ['category', 'alasan'],
       [SHEETS.VOTES]: ['voter_id', 'voter_name', 'employee_id', 'employee_name', 'category', 'reason', 'timestamp', 'survey_period'],
       [SHEETS.USERS]: ['id', 'name', 'username', 'password'],
@@ -286,9 +302,9 @@ function initDemoData() {
   
   const empSheet = getOrCreateSheet(SHEETS.EMPLOYEES);
   if (empSheet.getLastRow() === 1) {
-    empSheet.appendRow(['1', 'Budi Santoso', 'Staf KPLP', '', 'YA', 'TIDAK']);
-    empSheet.appendRow(['2', 'Siti Aminah', 'Staf Kamtib', '', 'TIDAK', 'YA']);
-    empSheet.appendRow(['3', 'Agus Prayitno', 'Staf Giatja', '', 'YA', 'YA']);
+    empSheet.appendRow(['1', 'Budi Santoso', 'Staf KPLP', '', 'YA', 'TIDAK', 'TIDAK']);
+    empSheet.appendRow(['2', 'Siti Aminah', 'Staf Kamtib', '', 'TIDAK', 'YA', 'TIDAK']);
+    empSheet.appendRow(['3', 'Agus Prayitno', 'Staf Giatja', '', 'YA', 'YA', 'TIDAK']);
   }
   
   const userSheet = getOrCreateSheet(SHEETS.USERS);
